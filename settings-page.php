@@ -32,7 +32,7 @@ function blpwp_get_stats(){
 //
 // get monthly stats
 //
-function blpwp_get_monthly_stats(){
+function blpwp_get_monthly_stats() {
     global $wpdb;
 	$sql = "SELECT
 			MONTH(thedate) AS month,
@@ -96,8 +96,8 @@ function blpwp_get_monthly_stats(){
 	
 	$rs = $wpdb->get_results($sql);
 	return $rs;
-
 }
+
 
 //
 // get daily stats
@@ -505,7 +505,7 @@ function blpwp_plugin_setting_style() {
 				</div>
 			</div>
 		</div>
-		<?
+		<?php
 	}
 	?></div><?php
 }

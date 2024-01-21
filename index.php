@@ -3,7 +3,7 @@
 Plugin Name: Bright Link Previews
 Plugin URI: http://www.barattalo.it/
 Description: Show previews of links (clear, neat, simple), analyze links and track user behaviour on the links of your site
-Version: 1.1
+Version: 1.5
 Author: Giulio Pons
 */
 
@@ -30,14 +30,24 @@ $blpwp_option_defaults = array(
 
 add_action('init', 'blpwp_plugin_init');
 
-register_activation_hook(__FILE__, 'blpwp_activation');
 
+/**
+ * On activation, add all functions to the scheduled action hook.
+ * 
+ * @return void
+ */
 function blpwp_activation() {
 	// nothing
 	blpwp_plugin_init();
 }
+register_activation_hook(__FILE__, 'blpwp_activation');
 
 
+/**
+ * function for initialization
+ * 
+ * @return void
+ */ 
 function blpwp_plugin_init() {
 	global $blpwp_option_defaults;
 
@@ -112,13 +122,12 @@ function blpwp_settings_link($links ) {
 
 
 
-//
-//---------------------------------------------
-// On activation create table 
-//---------------------------------------------
 
-
-
+/**
+ * On activation create table
+ * 
+ * @return void 
+ */
 function blpwp_activate() {
 	global $wpdb;
 
@@ -170,6 +179,13 @@ register_activation_hook(__FILE__, 'blpwp_activate');
 
 
 
+/**
+ * Load admin scripts
+ * 
+ * @param string $hook
+ * 
+ * @return void
+ */
 function blpwp_admin_script($hook) {
 
 	if($hook!="settings_page_blpwp-plugin") return;
@@ -196,44 +212,78 @@ add_action( 'admin_enqueue_scripts', 'blpwp_admin_script' );
 
 
 
+/**
+ * Parse $content and add classname to links to handle js behaviour
+ * 
+ * @param string $content
+ * @param string $classname
+ * 
+ * @return string
+ */
 function blpwp_addClassToLinks($content, $classname) {
-	$doc = new DOMDocument();
-	@$doc->loadHTML( mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8')  );
-	foreach( $doc->getElementsByTagName( 'a') as $tag) {
-		$tag->setAttribute('class', ($tag->hasAttribute('class') ? $tag->getAttribute('class') . ' ' : '') . $classname);
-	}
-	return $doc->saveHTML();
+    $doc = new DOMDocument();
+    libxml_use_internal_errors(true);
+	$doc->loadHTML(mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8'));
+
+    // Get the body element
+    $body = $doc->getElementsByTagName('body')->item(0);
+
+    // Iterate through the anchor tags within the body
+    foreach ($body->getElementsByTagName('a') as $tag) {
+        $tag->setAttribute('class', ($tag->hasAttribute('class') ? $tag->getAttribute('class') . ' ' : '') . $classname);
+    }
+
+    // Extract and return only the content of the body
+    $bodyContent = '';
+    foreach ($body->childNodes as $child) {
+        $bodyContent .= $doc->saveHTML($child);
+    }
+
+    return $bodyContent;
 }
 
 
 
-//
-//---------------------------------------------
-// add classname on content links
-//---------------------------------------------
-add_filter( 'the_content', 'blpwp_filter_the_content_links', 1 );
+/**
+ *  add classname on content links
+ * 
+ * @param string $content
+ * 
+ * @return string
+ * */ 
 function blpwp_filter_the_content_links( $content ) {
-	$options = get_option( 'blpwp_plugin_options' );
-	$val = isset($options['contentlinks']) ? $options['contentlinks'] : "";
-	if ($val) 
-		return blpwp_addClassToLinks($content, "blpwp");
-	else
-		return $content;
+	if(!is_admin()) {
+		$options = get_option( 'blpwp_plugin_options' );
+		$val = isset($options['contentlinks']) ? $options['contentlinks'] : "";
+		if ($val) 
+			return blpwp_addClassToLinks($content, "blpwp");
+	}
+	return $content;
 }
+add_filter( 'the_content', 'blpwp_filter_the_content_links', 10 );
 
-//
-//---------------------------------------------
-// add classname on comments links
-//---------------------------------------------
-add_filter( 'comment_text', 'blpwp_filter_the_comments_links' );
+
+
+/**
+ *  add classname on comments links
+ * 
+ * @param string $content
+ * 
+ * @return string
+ * */ 
 function blpwp_filter_the_comments_links( $comment_text ) {
-	$options = get_option( 'blpwp_plugin_options' );
-	$val = isset($options['commentlinks']) ? $options['commentlinks'] : "";
-	if ($val) 
-		return blpwp_addClassToLinks($comment_text, "blpwp_comment");
-	else
-		return $comment_text;
+	if(!is_admin()) {
+		$options = get_option( 'blpwp_plugin_options' );
+		$val = isset($options['commentlinks']) ? $options['commentlinks'] : "";
+		if ($val) 
+			return blpwp_addClassToLinks($comment_text, "blpwp_comment");
+	}
+	return $comment_text;
 }
+add_filter( 'comment_text', 'blpwp_filter_the_comments_links' );
+
+
+
 
 
 include("assets/minibots.class.php");

@@ -67,8 +67,9 @@ function blpwp_getinfo_callback() {
 	$url = isset($_POST['geturl']) ? trim($_POST['geturl']) : "";
 	
 	$rel = isset($_POST['rel']) ? trim($_POST['rel']) : "";
-	$rel = filter_var($rel, FILTER_SANITIZE_STRING);
-
+	// $rel = filter_var($rel, FILTER_SANITIZE_STRING);	//deprecated PHP 8.1
+	$rel = htmlspecialchars($rel);
+	
 	$idpost = isset($_POST['idpost']) ? $_POST['idpost'] : 0;
 	$idpost = preg_replace("/[^0-9]/", "",$idpost);
 

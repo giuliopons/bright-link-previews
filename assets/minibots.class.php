@@ -1,6 +1,6 @@
 <?php
 /* ------------------------------------------------------------------------- */
-/* minibots.class.php Ver.4.2a                                               */
+/* minibots.class.php Ver.4.2b                                               */
 /* ------------------------------------------------------------------------- */
 /* Mini Bots class is a small php class that helps you to create bots,       */
 /* it uses some free web seriveces online to retrive usefull data.           */
@@ -136,10 +136,12 @@ Class Minibots
 
 
 
+	// Not used yet
 	function getPageWP($url, $max_file_size=0) {
 
 		$response = wp_remote_get( $url );
 		$body     = wp_remote_retrieve_body( $response );
+		$header = wp_remote_retrieve_headers( $response );
 
 		return array($body , $header);
 	}
@@ -942,7 +944,8 @@ Class Minibots
 		// SEARCH DESCRIPTION AND TITLE
 		// 1 LDJSON / OEMBED
 		$arDescription = $this->walk_recursive( $ldJsonOembed, "description" );
-		if(is_array($arDescription)) $data['description'] = $arDescription[0]; // o array_pop ?
+		if(is_array($arDescription) && isset($arDescription[0])) $data['description'] = $arDescription[0]; // o array_pop ?
+			else $data['description']="";
 
 
 		// 2 META
@@ -1913,18 +1916,28 @@ Class Minibots
 
 
 
-	/*
-		Get a Gravatar URL for a specified email address
-		based on code found here: http://gravatar.com/site/implement/images/php/
-		
-		@param string $email The email address
-		@param string $s Size in pixels, defaults to 80px [ 1 - 2048 ]
-		@param string $d Default imageset to use [ 404 | mm | identicon | monsterid | wavatar ]
-	*/
-	public function getGravatar( $email, $s = 80, $d = 'mm' ) {
-		$url = 'http://www.gravatar.com/avatar/';
+	/** 
+	 * Get either a Gravatar URL or complete image tag for a specified email address.
+	 *
+	 * @param string $email The email address
+	 * @param string $s Size in pixels, defaults to 80px [ 1 - 2048 ]
+	 * @param string $d Default imageset to use [ 404 | mp | identicon | monsterid | wavatar ]
+	 * @param string $r Maximum rating (inclusive) [ g | pg | r | x ]
+	 * @param boolean $img True to return a complete IMG tag False for just the URL
+	 * @param array $atts Optional, additional key/value attributes to include in the IMG tag
+	 * @return string containing either just a URL or a complete image tag
+	 * @source https://gravatar.com/site/implement/images/php/
+	 */
+	function get_gravatar( $email, $s = 80, $d = 'mp', $r = 'g', $img = false, $atts = array() ) {
+		$url = 'https://www.gravatar.com/avatar/';
 		$url .= md5( strtolower( trim( $email ) ) );
 		$url .= "?s=$s&d=$d&r=$r";
+		if ( $img ) {
+			$url = '<img src="' . $url . '"';
+			foreach ( $atts as $key => $val )
+				$url .= ' ' . $key . '="' . $val . '"';
+			$url .= ' />';
+		}
 		return $url;
 	}
 

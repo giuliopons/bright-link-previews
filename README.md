@@ -9,5 +9,4 @@ Works also on mobile (in a different way).
 
 # Buy me a coffee
 If you like this project you can support it trought my [Github sponsor](https://github.com/sponsors/giuliopons) page (there are both recurrent tiers and one time tiers).
-
 Thank you!

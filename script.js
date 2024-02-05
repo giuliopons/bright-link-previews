@@ -302,11 +302,18 @@ jQuery(document).ready(function($) {
 								// console.log("click")
 
 								if(mobile()) {
-									// on mobile the click open the pop up
+									if(blpwp_params['options'].disable_mobile == 'on') {
+										triggerClick(a);
 
-									prepareLayers();
+									} else {
+										// on mobile the click open the pop up
 
-									setupPopUp(a, e);
+										prepareLayers();
+
+										setupPopUp(a, e);
+
+
+									}
 
 								} else {
 									// on desktop the click is a click

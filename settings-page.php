@@ -378,6 +378,8 @@ function blpwp_register_settings() {
 	// FORCE TARGET BLANK ON EXTERNAL LINKS
     add_settings_field( 'blpwp_plugin_setting_blank', esc_html__('Force target','blpwp'), 'blpwp_plugin_setting_blank', 'blpwp_plugin', 'save_these_options' );
 
+	// DISABLE ON MOBILE
+    add_settings_field( 'blpwp_plugin_setting_disable_mobile', esc_html__('Disable on mobile','blpwp'), 'blpwp_plugin_setting_disable_mobile', 'blpwp_plugin', 'save_these_options' );
 
 }
 add_action( 'admin_init', 'blpwp_register_settings' );
@@ -400,6 +402,7 @@ function blpwp_plugin_options_validate( $input ) {
 	$newinput['counter'] = trim( $input['counter'] );
 	$newinput['cache'] = trim( $input['cache'] );
 	$newinput['blank'] = $input['blank'] == "on" ? "on" : "";
+	$newinput['disable_mobile'] = $input['disable_mobile'] == "on" ? "on" : "";
     return $newinput;
 }
 
@@ -548,5 +551,11 @@ function blpwp_plugin_setting_blank() {
 }
 
 
-
+// DISABLE THE POP UP UN MOBILE
+function blpwp_plugin_setting_disable_mobile() {
+    $options = get_option( 'blpwp_plugin_options' );
+	$val = isset($options['disable_mobile']) ? $options['disable_mobile'] : "";
+    echo "<input type='checkbox' id='blpwp_plugin_setting_disable_mobile' name='blpwp_plugin_options[disable_mobile]' value='on' ".($val=="on" ? "checked" : "")." /> ";
+	echo esc_html__("Disable the pop up on mobile",'blpwp');
+}
 

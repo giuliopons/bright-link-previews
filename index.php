@@ -252,13 +252,17 @@ function blpwp_addClassToLinks($content, $classname) {
  * @return string
  * */ 
 function blpwp_filter_the_content_links( $content ) {
-	if(!is_admin()) {
-		$options = get_option( 'blpwp_plugin_options' );
-		$val = isset($options['contentlinks']) ? $options['contentlinks'] : "";
-		if ($val) 
-			return blpwp_addClassToLinks($content, "blpwp");
+	if($content) {
+		if(!is_admin()) {
+			$options = get_option( 'blpwp_plugin_options' );
+			$val = isset($options['contentlinks']) ? $options['contentlinks'] : "";
+			if ($val) 
+				return blpwp_addClassToLinks($content, "blpwp");
+		}
+		return $content;
+	} else {
+		return null;
 	}
-	return $content;
 }
 add_filter( 'the_content', 'blpwp_filter_the_content_links', 10 );
 

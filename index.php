@@ -221,25 +221,29 @@ add_action( 'admin_enqueue_scripts', 'blpwp_admin_script' );
  * @return string
  */
 function blpwp_addClassToLinks($content, $classname) {
-    $doc = new DOMDocument();
-    libxml_use_internal_errors(true);
-	$doc->loadHTML(mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8'));
+	if($content) {
+		$doc = new DOMDocument();
+		libxml_use_internal_errors(true);
+		$doc->loadHTML('<?xml encoding="utf-8" ?>' . htmlspecialchars_decode($content));
 
-    // Get the body element
-    $body = $doc->getElementsByTagName('body')->item(0);
+		// Get the body element
+		$body = $doc->getElementsByTagName('body')->item(0);
 
-    // Iterate through the anchor tags within the body
-    foreach ($body->getElementsByTagName('a') as $tag) {
-        $tag->setAttribute('class', ($tag->hasAttribute('class') ? $tag->getAttribute('class') . ' ' : '') . $classname);
-    }
+		// Iterate through the anchor tags within the body
+		foreach ($body->getElementsByTagName('a') as $tag) {
+			$tag->setAttribute('class', ($tag->hasAttribute('class') ? $tag->getAttribute('class') . ' ' : '') . $classname);
+		}
 
-    // Extract and return only the content of the body
-    $bodyContent = '';
-    foreach ($body->childNodes as $child) {
-        $bodyContent .= $doc->saveHTML($child);
-    }
+		// Extract and return only the content of the body
+		$bodyContent = '';
+		foreach ($body->childNodes as $child) {
+			$bodyContent .= $doc->saveHTML($child);
+		}
 
-    return $bodyContent;
+		return $bodyContent;
+	} else {
+		return null;
+	}
 }
 
 
@@ -252,13 +256,17 @@ function blpwp_addClassToLinks($content, $classname) {
  * @return string
  * */ 
 function blpwp_filter_the_content_links( $content ) {
-	if(!is_admin()) {
-		$options = get_option( 'blpwp_plugin_options' );
-		$val = isset($options['contentlinks']) ? $options['contentlinks'] : "";
-		if ($val) 
-			return blpwp_addClassToLinks($content, "blpwp");
+	if($content) {
+		if(!is_admin()) {
+			$options = get_option( 'blpwp_plugin_options' );
+			$val = isset($options['contentlinks']) ? $options['contentlinks'] : "";
+			if ($val) 
+				return blpwp_addClassToLinks($content, "blpwp");
+		}
+		return $content;
+	} else {
+		return null;
 	}
-	return $content;
 }
 add_filter( 'the_content', 'blpwp_filter_the_content_links', 10 );
 

@@ -66,3 +66,6 @@ Note: some links (like Facebook or Instagram) could be read only partially becau
 = 1.6 =
 * Fixed warnings in ajax calls with PHP 8.1
 
+= 1.7 =
+* Bug fixings (thanks to adamgreenough) and new setting to disable the popup on mobile devices
+

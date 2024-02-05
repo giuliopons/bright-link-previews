@@ -223,7 +223,7 @@ add_action( 'admin_enqueue_scripts', 'blpwp_admin_script' );
 function blpwp_addClassToLinks($content, $classname) {
     $doc = new DOMDocument();
     libxml_use_internal_errors(true);
-	$doc->loadHTML(mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8'));
+	$doc->loadHTML(htmlspecialchars_decode(htmlentities($content)));
 
     // Get the body element
     $body = $doc->getElementsByTagName('body')->item(0);

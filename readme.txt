@@ -4,7 +4,7 @@ Donate link: https://github.com/sponsors/giuliopons
 Tags: links, href, previews, link analyzer
 Requires at least: 6.1
 Tested up to: 6.4
-Stable tag: 1.6
+Stable tag: 1.7
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html

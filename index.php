@@ -221,25 +221,29 @@ add_action( 'admin_enqueue_scripts', 'blpwp_admin_script' );
  * @return string
  */
 function blpwp_addClassToLinks($content, $classname) {
-	$doc = new DOMDocument();
-	libxml_use_internal_errors(true);
-	$doc->loadHTML('<?xml encoding="utf-8" ?>' . htmlspecialchars_decode($content));
+	if($content) {
+		$doc = new DOMDocument();
+		libxml_use_internal_errors(true);
+		$doc->loadHTML('<?xml encoding="utf-8" ?>' . htmlspecialchars_decode($content));
 
-	// Get the body element
-	$body = $doc->getElementsByTagName('body')->item(0);
+		// Get the body element
+		$body = $doc->getElementsByTagName('body')->item(0);
 
-	// Iterate through the anchor tags within the body
-	foreach ($body->getElementsByTagName('a') as $tag) {
-		$tag->setAttribute('class', ($tag->hasAttribute('class') ? $tag->getAttribute('class') . ' ' : '') . $classname);
+		// Iterate through the anchor tags within the body
+		foreach ($body->getElementsByTagName('a') as $tag) {
+			$tag->setAttribute('class', ($tag->hasAttribute('class') ? $tag->getAttribute('class') . ' ' : '') . $classname);
+		}
+
+		// Extract and return only the content of the body
+		$bodyContent = '';
+		foreach ($body->childNodes as $child) {
+			$bodyContent .= $doc->saveHTML($child);
+		}
+
+		return $bodyContent;
+	} else {
+		return null;
 	}
-
-	// Extract and return only the content of the body
-	$bodyContent = '';
-	foreach ($body->childNodes as $child) {
-		$bodyContent .= $doc->saveHTML($child);
-	}
-
-	return $bodyContent;
 }
 
 

@@ -499,12 +499,12 @@ function blpwp_plugin_setting_style() {
 					<span class="blpwp_spot"><b><i>199 €</i></b></span>
 				</div>
 				<div class="blpwp_info">
-					<h5><?php echo esc_html__("This is the main title of the linked page",'blpwp') ;?></h5>
-					<h6><?php echo esc_html__("In this section you will find a small description of the page from the linked url, the preview could contain less information than this example.",'blpwp') ;?></h6>
-					<h4>
+					<div class='h5'><?php echo esc_html__("This is the main title of the linked page",'blpwp') ;?></div>
+					<div class='h6'><?php echo esc_html__("In this section you will find a small description of the page from the linked url, the preview could contain less information than this example.",'blpwp') ;?></div>
+					<div class='h4'>
 						<img src="<?php echo esc_url(plugin_dir_url( __FILE__ )."assets/ico.jpg?1");?>">
 						<?php echo esc_html__("www.linked.url",'blpwp');?>
-					</h4>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -3,7 +3,7 @@
 Plugin Name: Bright Link Previews
 Plugin URI: http://www.barattalo.it/
 Description: Show previews of links (clear, neat, simple), analyze links and track user behaviour on the links of your site
-Version: 1.7
+Version: 1.8
 Author: Giulio Pons
 */
 
@@ -87,10 +87,13 @@ function blpwp_scripts(){
 			"idpost" => get_queried_object_id()
 		);
 
-		wp_register_script('blpwp_script_js',plugin_dir_url( __FILE__ ).'script.js',array('jquery'),rand(1,11111),true);
+		// this plugin data
+		$data = get_plugin_data(__FILE__, true);
+
+		wp_register_script('blpwp_script_js',plugin_dir_url( __FILE__ ).'script.js',array('jquery'),$data["Version"],true);
 		wp_enqueue_script('blpwp_script_js');
 
-		wp_register_style( 'blpwp_css', plugin_dir_url( __FILE__ ).'style.css', false,  rand(1,11111));
+		wp_register_style( 'blpwp_css', plugin_dir_url( __FILE__ ).'style.css', [],  $data["Version"]);
 		wp_enqueue_style( 'blpwp_css' );
 
 		wp_localize_script( 'blpwp_script_js', 'blpwp_params', $params );
@@ -191,9 +194,12 @@ function blpwp_admin_script($hook) {
 	if($hook!="settings_page_blpwp-plugin") return;
 	// admin scripts should be loaded only where they are useful:
 
-	wp_register_script('blpwp_script_js',plugin_dir_url( __FILE__ ).'admin.js',array('jquery'),'1.0',true);
-	wp_enqueue_style( 'blpwp_css', plugin_dir_url( __FILE__ ).'style.css', false, '1.0' );
-	wp_enqueue_style( 'blpwp_admin_css', plugin_dir_url( __FILE__ ).'admin.css', false, rand(1,11111) );
+	// this plugin data
+	$data = get_plugin_data(__FILE__, true);
+	
+	wp_register_script('blpwp_script_js',plugin_dir_url( __FILE__ ).'admin.js',array('jquery'),$data["Version"],true);
+	wp_enqueue_style( 'blpwp_css', plugin_dir_url( __FILE__ ).'style.css', [], $data["Version"] );
+	wp_enqueue_style( 'blpwp_admin_css', plugin_dir_url( __FILE__ ).'admin.css', [], $data["Version"] );
 	wp_enqueue_script('blpwp_script_js');
 
     // tabulator external css and js libraries

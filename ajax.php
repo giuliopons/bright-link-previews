@@ -64,9 +64,9 @@ function blpwp_getinfo_callback() {
 	global $wpdb;
 
 	// FILTER AND SANITIZE POST VALUES
-	$url = isset($_POST['geturl']) ? trim($_POST['geturl']) : "";
+	$url = isset($_POST['geturl']) ? trim(stripslashes($_POST['geturl'])) : "";
 	
-	$rel = isset($_POST['rel']) ? trim($_POST['rel']) : "";
+	$rel = isset($_POST['rel']) ? trim(stripslashes($_POST['rel'])) : "";
 	// $rel = filter_var($rel, FILTER_SANITIZE_STRING);	//deprecated PHP 8.1
 	$rel = htmlspecialchars($rel);
 	
@@ -113,13 +113,13 @@ function blpwp_getinfo_callback() {
 					<?php if(isset($obj["price"]) && $obj["price"] && $obj["price"] > 0) echo "<span class='blpwp_spot'>" . ($obj["price"] ? "<b><i>".esc_html($obj["price"])."</i></b>" : "") . "</span>";?>
 				</div>
 				<div class="blpwp_info">
-					<h5><?php echo esc_html(smartSubstr($obj['title']));?></h5>
-					<h6><?php echo esc_html(smartSubstr($obj['description']));?></h6>
-					<h4>
+					<div class='h5'><?php echo esc_html(smartSubstr($obj['title']));?></div>
+					<div class='h6'><?php echo esc_html(smartSubstr($obj['description']));?></div>
+					<div class='h4'>
 						<?php if($obj['favicon']) echo "<img src='".esc_url($obj['favicon'])."' onerror=\"jQuery(this).hide();\"/>";?>
 						<?php echo esc_html($obj["domain"]);?>
-					</h4>
-					<?php if($meta) echo "<h3>".$meta."</h3>"; ?>
+					</div>
+					<?php if($meta) echo "<div class='h3'>".$meta."</div>"; ?>
 				</div>
 			</div>
 			<?php

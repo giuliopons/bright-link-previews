@@ -9,7 +9,7 @@ Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-This plugin add a neat previews of links when the user pass hover the links, analyzes links and track user's behaviour on the links of your site.
+This plugin adds a neat previews of links when the user pass hover the links, analyzes links and track user's behaviour on the links of your site.
 
 == Installation ==
 
@@ -69,3 +69,6 @@ Note: some links (like Facebook or Instagram) could be read only partially becau
 = 1.7 =
 * Bug fixings (thanks to adamgreenough) and new setting to disable the popup on mobile devices
 
+= 1.8 =
+* Fixed Schrödinger's cat bug (thanks to jvandriel who found the cat!)
+* Improved HTML of the pop up, now it hasn't heading tags

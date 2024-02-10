@@ -4,7 +4,7 @@ Donate link: https://github.com/sponsors/giuliopons
 Tags: links, href, previews, link analyzer
 Requires at least: 6.1
 Tested up to: 6.4
-Stable tag: 1.81
+Stable tag: 1.82
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -73,3 +73,6 @@ Note: some links (like Facebook or Instagram) could be read only partially becau
 * Fixed Schrödinger's cat bug (thanks to jvandriel who found the cat!)
 * Improved HTML of the pop up, now it hasn't heading tags
 * CSS and JS calls now have a version number
+
+= 1.82 =
+* Fixed a bug with htmlspecialchars_decode

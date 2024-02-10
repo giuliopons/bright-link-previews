@@ -3,7 +3,7 @@
 Plugin Name: Bright Link Previews
 Plugin URI: http://www.barattalo.it/
 Description: Show previews of links (clear, neat, simple), analyze links and track user behaviour on the links of your site
-Version: 1.81
+Version: 1.82
 Author: Giulio Pons
 */
 
@@ -236,7 +236,8 @@ function blpwp_addClassToLinks($content, $classname) {
 	if($content) {
 		$doc = new DOMDocument();
 		libxml_use_internal_errors(true);
-		$doc->loadHTML('<?xml encoding="utf-8" ?>' . htmlspecialchars_decode($content));
+		/* $doc->loadHTML('<?xml encoding="utf-8" ?>' . htmlspecialchars_decode($content)); */
+		$doc->loadHTML('<?xml encoding="utf-8" ?>' . iconv('UTF-8', 'ASCII//TRANSLIT',$content));		
 
 		// Get the body element
 		$body = $doc->getElementsByTagName('body')->item(0);

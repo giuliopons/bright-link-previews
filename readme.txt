@@ -4,7 +4,7 @@ Donate link: https://github.com/sponsors/giuliopons
 Tags: links, href, previews, link analyzer
 Requires at least: 6.1
 Tested up to: 6.4
-Stable tag: 1.83
+Stable tag: 1.85
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -77,5 +77,5 @@ Note: some links (like Facebook or Instagram) could be read only partially becau
 = 1.82 =
 * Fixed a bug with htmlspecialchars_decode
 
-= 1.83 =
-* Fixed a bug with iconv, used again htmlspecialchars_decode
+= 1.85 =
+* Fixed a bug with link around images, fixed the bug with chars conversion in 1.82

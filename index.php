@@ -3,7 +3,7 @@
 Plugin Name: Bright Link Previews
 Plugin URI: http://www.barattalo.it/
 Description: Show previews of links (clear, neat, simple), analyze links and track user behaviour on the links of your site
-Version: 1.82
+Version: 1.85
 Author: Giulio Pons
 */
 
@@ -222,42 +222,53 @@ function blpwp_admin_script($hook) {
 add_action( 'admin_enqueue_scripts', 'blpwp_admin_script' );
  	
 
-
-
 /**
  * Parse $content and add classname to links to handle js behaviour
  * 
- * @param string $content
+ * @param string $html
  * @param string $classname
  * 
  * @return string
  */
-function blpwp_addClassToLinks($content, $classname) {
-	if($content) {
-		$doc = new DOMDocument();
-		libxml_use_internal_errors(true);
-		$doc->loadHTML('<?xml encoding="utf-8" ?>' . htmlspecialchars_decode($content));
-		/* $doc->loadHTML('<?xml encoding="utf-8" ?>' . iconv('UTF-8', 'ASCII//TRANSLIT',$content));		*/
-
-		// Get the body element
-		$body = $doc->getElementsByTagName('body')->item(0);
-
-		// Iterate through the anchor tags within the body
-		foreach ($body->getElementsByTagName('a') as $tag) {
-			$tag->setAttribute('class', ($tag->hasAttribute('class') ? $tag->getAttribute('class') . ' ' : '') . $classname);
-		}
-
-		// Extract and return only the content of the body
-		$bodyContent = '';
-		foreach ($body->childNodes as $child) {
-			$bodyContent .= $doc->saveHTML($child);
-		}
-
-		return $bodyContent;
-	} else {
-		return null;
-	}
+function blpwp_addClassToLinks($html, $classname) {
+    // Define the regular expression pattern to match <a> tags
+    $pattern = '/<a(.*?)>/i';
+    
+    // Callback function to add or modify class attribute
+    $callback = function ($matches) use ($classname) {
+        $tag = $matches[0];
+        $attributes = $matches[1];
+        
+        // Check if the <a> tag already has a class attribute
+        if (preg_match('/class\s*=\s*["\'](.*?)["\']/i', $attributes, $classMatches)) {
+            // If class attribute already exists, concatenate the new class
+            $existingClasses = $classMatches[1];
+            $classes = explode(' ', $existingClasses);
+            
+            // Check if the class already exists
+            if (!in_array($classname, $classes)) {
+                $classes[] = $classname;
+            }
+            $classAttribute = 'class="' . implode(' ', $classes) . '"';
+            
+            // Replace the existing class attribute with the modified one
+            $attributes = preg_replace('/class\s*=\s*["\'](.*?)["\']/i', $classAttribute, $attributes);
+        } else {
+            // If no class attribute exists, create it with the new class
+            $classAttribute = 'class="' . $classname . '"';
+            $attributes .= ' ' . $classAttribute;
+        }
+        
+        // Concatenate the modified tag
+        return '<a' . $attributes . '>';
+    };
+    
+    // Use preg_replace_callback to replace <a> tags with modified ones
+    $html = preg_replace_callback($pattern, $callback, $html);
+    
+    return $html;
 }
+
 
 
 

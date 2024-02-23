@@ -74,13 +74,8 @@ jQuery(document).ready(function($) {
 					$("body").data("css-overflow", $("body").css("overflow"));
 					$('body').append("<div id='underblpwp' class='" + blpwp_params['options'].style + "'></div>");
 					$('body,html').css("overflow","hidden");
-					// $('#blpwp').removeClass("fading");
-					// console.log("rimosso")
-					// console.log($('#blpwp').attr("class"));
 					mTimer = setInterval(function(){
-						// console.log("mTimer (opacity=" + $('#blpwp').css("opacity") + " " + ($('#blpwp').hasClass("fading")? "ha fading":"non ha fading")+")");
 						if($('#blpwp').css("opacity") <= 0.05 && $('#blpwp').hasClass("fading")) {
-							// console.log("remove");
 							$('#underblpwp').remove();$('#blpwp').remove();
 							clearInterval(mTimer);
 						}
@@ -89,7 +84,6 @@ jQuery(document).ready(function($) {
 							e.preventDefault();
 							e.stopPropagation();
 							if($('#blpwp').css("opacity") >=.95  && !$('#blpwp').hasClass("fading")) {
-								// console.log("add fading");
 								$('#blpwp').addClass("fading");
 								$('body,html').css("overflow",$("body").data("css-overflow"));
 							}
@@ -103,8 +97,6 @@ jQuery(document).ready(function($) {
 				}
 
 				function showThisPop(a) {
-					// console.log("showThisPop");
-					// console.log($('#blpwp').attr("class"));
 					$('#blpwp').html(a.data("html")).attr("class","mblpwp loaded " +  blpwp_params['options'].style + " " + (mobile() ? "mob" :"") );
 					checkPic();
 					if(mobile()){
@@ -112,9 +104,7 @@ jQuery(document).ready(function($) {
 						$('#blpwp').on("click",function(e){
 								e.preventDefault();
 								e.stopPropagation();
-							 // console.log("#blpwp.click");
 							if(!$('#blpwp').hasClass("fading")) {
-								// console.log("not fading... open");
 								triggerClick(a)
 							}
 						});
@@ -123,17 +113,21 @@ jQuery(document).ready(function($) {
 			    
 			    function convertToAbsoluteURL(relativeURL) {
 			        // Check if a <base> tag already exists
-			        const existingBase = document.querySelector('base');
-			        let base;
-			        if (existingBase) {
-			            base = existingBase;
-			        } else {
-			            base = document.createElement('base');
-			            document.head.appendChild(base);
-			        }
-			        base.href = window.location.href;
-			        const absoluteURL = new URL(relativeURL, base.href);
-			        return absoluteURL.href;
+					if(relativeURL) {
+						const existingBase = document.querySelector('base');
+						let base;
+						if (existingBase) {
+							base = existingBase;
+						} else {
+							base = document.createElement('base');
+							document.head.appendChild(base);
+						}
+						base.href = window.location.href;
+						const absoluteURL = new URL(relativeURL, base.href);
+						return absoluteURL.href;
+					} else {
+						return "";
+					}
 			    }
 			    
 				function setupPopUp(a, e) {
@@ -146,7 +140,6 @@ jQuery(document).ready(function($) {
 						let s = 'a[href^="' + h+'"]';
 						$(s).each(function(){
 							if($(this).data("html")!="" && typeof($(this).data("html"))!=="undefined") { 
-								// console.log("already used");
 								a.data("html", $(this).data("html")); a.data("status",2); return;
 							}
 						});
@@ -169,8 +162,6 @@ jQuery(document).ready(function($) {
 							success: function(html){
 								a.data("html",html);
 								a.data("status",2);	// status = 2 ==> OK
-								// console.log(currentA + " == " +h + "(1)")
-
 								if(currentA == h || !currentA) showThisPop(a);
 							},
 						});
@@ -182,10 +173,8 @@ jQuery(document).ready(function($) {
 						if(a.data("status")==1) { // link is loading
 							$('#blpwp').html(_f("loading-preview")).attr("class","mblpwp loading c " +  blpwp_params['options'].style + " " +  (mobile() ? "mob" :""));
 						} else {
-
 							// status is 2 ==> OK
 							if(a.data("status") == 2 ) {
-								// console.log(currentA + " == " +h + "(2)")
 								if(currentA == h || !currentA) showThisPop(a);
 							} else {
 								// other
@@ -298,8 +287,6 @@ jQuery(document).ready(function($) {
 								e.preventDefault();
 								e.stopPropagation();
 								e.stopImmediatePropagation();
-
-								// console.log("click")
 
 								if(mobile()) {
 									if(blpwp_params['options'].disable_mobile == 'on') {

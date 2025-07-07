@@ -271,9 +271,9 @@ jQuery(document).ready(function($) {
 					}
 
 					let preventClick = 0;
-					if (check && blpwp_params['options'].imagelinks == '' && h.match(/(\.(jpe?g|gif|png|webp))$/, 'i') && $(this).find("img").length == 1 && $(this).children().length == 1) {
-						check = false;
-					}
+                                        if (check && blpwp_params['options'].imagelinks == '' && h.match(/(\.(jpe?g|gif|png|webp))$/i) && $(this).find("img").length == 1 && $(this).children().length == 1) {
+                                               check = false;
+                                       }
 
 					if (check) {
 

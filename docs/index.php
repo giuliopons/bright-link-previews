@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 //
 // This file parse the HTML of the BrightLinks docs
 // add some styles and print everything in HTML.

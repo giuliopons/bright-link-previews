@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 /*
 Plugin Name: Bright Link Previews
 Plugin URI: http://www.barattalo.it/

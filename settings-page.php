@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 //
 // Using WP settings api to build a complex setting page for the plugin
 //

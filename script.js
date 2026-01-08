@@ -279,7 +279,7 @@ jQuery(document).ready(function($) {
 
 						// console.log("check")
 
-						if ($(this).attr("href").indexOf("wp-admin")==-1 && $(this).attr("href").trim()!="") {
+						if ($(this).attr("href") && $(this).attr("href").indexOf("wp-admin")==-1 && $(this).attr("href").trim()!="") {
 							a.data("html","");
 							a.data("status",0);
 							a.data("preventClick",preventClick);

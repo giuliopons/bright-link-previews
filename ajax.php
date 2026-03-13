@@ -39,7 +39,7 @@ function getUrlData($url) {
 		if ($ret !== false ) return $ret;
 
 	}
-	$mb = new Minibots();
+	$mb = new MinibotsWP();
 	$obj = $mb->getUrlInfo($url,15,0,true);
 
 	set_transient( $transient_key, $obj ,60 * 60 * 72); // 72 hours cache

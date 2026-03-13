@@ -153,7 +153,7 @@ function blpwp_click_callback() {
 	$url = isset($_POST['url']) ? trim($_POST['url']) : "";
 	
 	$rel = isset($_POST['rel']) ? trim($_POST['rel']) : "";
-	$rel = filter_var($rel, FILTER_SANITIZE_STRING);
+	$rel = htmlspecialchars($rel, ENT_QUOTES, 'UTF-8');
 
 	$idpost = isset($_POST['idpost']) ? $_POST['idpost'] : 0;
 	$idpost = preg_replace("/[^0-9]/", "",$idpost);
